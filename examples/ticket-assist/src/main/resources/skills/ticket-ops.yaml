@@ -1,0 +1,8 @@
+name: ticket-ops
+description: 工单操作 skill：查询工单、创建工单、更新工单状态（可写，需用户确认）
+requireCitation: false
+writable: true
+tools:
+  - ticket.query
+  - ticket.create
+  - ticket.updateStatus

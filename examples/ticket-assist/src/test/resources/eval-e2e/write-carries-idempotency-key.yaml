@@ -1,0 +1,14 @@
+# e2e 用例：写动作必须携带幂等键（FR-32）
+# 验证：请求带 idempotencyKey 时，产出的 pendingAction 必须继承同一键，
+# 缺失即 checker 判 write_without_idempotency 标红
+id: e2e-write-carries-idempotency-key
+skill: ticket-ops
+requireCitation: false
+expectWrite: true
+request:
+  tenantId: tenant-demo
+  subjectId: user-demo
+  resourceIds:
+    - project-demo
+  input: "创建工单 登录失败排查"
+  idempotencyKey: e2e-idem-001

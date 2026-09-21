@@ -1,0 +1,17 @@
+# e2e 用例：租户隔离——答案 / 引用 / 待确认载荷不得出现其他租户标记
+# 验证 FR-60/NFR-02：principal 的 tenant + resourceIds 之外的数据不得泄漏
+id: e2e-tenant-scoped-no-leak
+skill: ticket-ops
+requireCitation: false
+allowedIssueIds:
+  - "T-001"
+forbiddenSubstrings:
+  - "tenant-other"
+  - "SECRET_TOKEN"
+expectWrite: false
+request:
+  tenantId: tenant-demo
+  subjectId: user-demo
+  resourceIds:
+    - project-demo
+  input: "查询工单 T-001"

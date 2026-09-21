@@ -1,0 +1,52 @@
+keel:
+  agent:
+    # 使用 graph 模式以支持 Plan -> Tool -> Critic -> Guard 循环与写工具确认（FR-10/FR-13）
+    mode: graph
+    max-steps: 5
+    timeout: 30s
+  # 示例使用本地 TicketToolPort，不接 MCP；不配 transport 即不创建默认 McpSyncClient
+  tools:
+    mcp:
+      enabled: false
+    allowed:
+      - ticket.query
+      - ticket.create
+      - ticket.updateStatus
+  # 示例不接入向量库，纯工具路径
+  retrieval:
+    enabled: false
+  # 示例为单实例、无外部依赖：显式关闭 checkpoint 用内存实现。
+  # （未引入 keel-memory；若保持默认 enabled=true，starter 会在启动期 fail-fast
+  #   提示引入 keel-memory —— 这是刻意设计，避免多实例下写确认静默失效。）
+  #
+  # 生产必须改为 true 并引入 io.keel:keel-memory，完整可配项：
+  #   checkpoint:
+  #     enabled: true
+  #     host: redis.internal
+  #     port: 6379
+  #     password: ${REDIS_PASSWORD}   # 密钥只走配置/环境变量（NFR-08）
+  #     database: 0
+  #     ssl: false                    # 云 Redis / 跨公网访问时置 true
+  #     ttl: 30m
+  #     connect-timeout: 2s
+  #     command-timeout: 3s
+  #     max-retries: 3                # 断线自动重连次数，0 表示关闭
+  checkpoint:
+    enabled: false
+  langfuse:
+    enabled: false
+  # 示例的默认身份：TicketIdentityConfiguration 读请求头，缺省落回这里。
+  # 多租户生产请注册自己的 PrincipalResolver bean，不要依赖本段配置
+  #（本段对所有请求返回同一身份，多租户下会串号）。
+  principal:
+    tenant-id: tenant-demo
+    subject-id: user-demo
+    resource-ids:
+      - project-demo
+
+# 示例默认用 ScriptedChatModel（脚本化规划），开箱即用。
+# 接入真实模型时，配置 spring.ai.* 并删除 ScriptedChatModel 即可。
+spring:
+  ai:
+    openai:
+      api-key: ${OPENAI_API_KEY:}

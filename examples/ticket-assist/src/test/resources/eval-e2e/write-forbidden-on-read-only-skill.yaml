@@ -1,0 +1,13 @@
+# e2e 用例：只读 skill 上尝试写动作必须被代码规则拒绝
+# 验证 FR-13/FR-62：skill 未声明可写时，提议写动作由 Guard 直接拒绝，
+# 不得产生 pendingAction（否则 checker 判 unexpected_write 标红）
+id: e2e-write-forbidden-on-read-only-skill
+skill: chat
+requireCitation: false
+expectWrite: false
+request:
+  tenantId: tenant-demo
+  subjectId: user-demo
+  resourceIds:
+    - project-demo
+  input: "创建工单 未授权写入尝试"
