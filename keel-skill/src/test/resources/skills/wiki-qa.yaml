@@ -1,0 +1,5 @@
+name: wiki-qa
+description: Wiki question answering skill
+requireCitation: true
+writable: false
+tools: []

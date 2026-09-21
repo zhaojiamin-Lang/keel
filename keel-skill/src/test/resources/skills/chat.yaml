@@ -1,0 +1,5 @@
+name: chat
+description: Chat skill
+requireCitation: false
+writable: false
+tools: []
