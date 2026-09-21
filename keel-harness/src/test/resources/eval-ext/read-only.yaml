@@ -1,0 +1,11 @@
+id: eval-001
+skill: wiki-qa
+requireCitation: true
+forbiddenSubstrings:
+  - "SECRET_TOKEN"
+request:
+  tenantId: tenant-a
+  subjectId: user-1
+  resourceIds:
+    - "proj-1"
+  input: "这个工单以前怎么处理的？"

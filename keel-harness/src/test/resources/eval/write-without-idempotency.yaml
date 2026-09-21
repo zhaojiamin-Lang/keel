@@ -1,0 +1,14 @@
+id: write-without-idempotency
+skill: ticket-assist
+requireCitation: false
+forbiddenSubstrings: []
+allowedIssueIds: []
+expectWrite: true
+request:
+  tenantId: tenant-A
+  subjectId: user-1
+  resourceIds:
+    - ISSUE-1
+  input: 请关闭 ISSUE-1
+  # 故意不带 idempotencyKey——请求级缺幂等键透传到 PendingAction，
+  # Harness 的 write_without_idempotency 断言应标红（FR-32/FR-72）

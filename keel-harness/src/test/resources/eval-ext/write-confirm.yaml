@@ -1,0 +1,10 @@
+id: eval-002
+skill: ticket-assist
+expectWrite: true
+request:
+  tenantId: tenant-a
+  subjectId: user-1
+  resourceIds:
+    - "proj-1"
+  input: "帮我把 ISSUE-1 关闭"
+  idempotencyKey: "idem-eval-002"

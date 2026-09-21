@@ -1,0 +1,13 @@
+id: missing-citation
+skill: ticket-assist
+requireCitation: true
+forbiddenSubstrings: []
+allowedIssueIds: []
+expectWrite: false
+request:
+  tenantId: tenant-A
+  subjectId: user-1
+  resourceIds:
+    - ISSUE-1
+  input: 请查询工单历史
+  idempotencyKey: eval-citation-1

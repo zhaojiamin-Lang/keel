@@ -1,0 +1,13 @@
+id: fabricated-id
+skill: ticket-assist
+requireCitation: false
+forbiddenSubstrings: []
+allowedIssueIds: []
+expectWrite: false
+request:
+  tenantId: tenant-A
+  subjectId: user-1
+  resourceIds:
+    - ISSUE-1
+  input: 请给出可关闭的工单
+  idempotencyKey: eval-fabricated-1
