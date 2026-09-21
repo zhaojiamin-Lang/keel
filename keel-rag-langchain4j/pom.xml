@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>io.keel</groupId>
+        <artifactId>keel-parent</artifactId>
+        <version>0.1.0-SNAPSHOT</version>
+        <relativePath>../pom.xml</relativePath>
+    </parent>
+
+    <artifactId>keel-rag-langchain4j</artifactId>
+
+    <dependencies>
+        <!-- 实现 graph 的 RetrievalPort SPI；传递依赖 keel-core -->
+        <dependency>
+            <groupId>io.keel</groupId>
+            <artifactId>keel-graph</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <!-- LangChain4j 标准组件（EmbeddingModel / EmbeddingStore / TextSegment / Filter），
+             版本由 keel-bom 统一管理，禁止在此写死版本 -->
+        <dependency>
+            <groupId>dev.langchain4j</groupId>
+            <artifactId>langchain4j</artifactId>
+        </dependency>
+        <!--
+          生产级向量存储（FR-40）：PGVector（小项目/示例）与 Milvus（生产多租户）。
+          均 optional——本模块只在 KeelEmbeddingStoreFactory 编译期引用它们，
+          不向依赖 keel-rag-langchain4j 的业务强制传递；业务按需自选引入，
+          缺依赖时工厂抛明确错误（FR-03）。
+        -->
+        <dependency>
+            <groupId>dev.langchain4j</groupId>
+            <artifactId>langchain4j-pgvector</artifactId>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>dev.langchain4j</groupId>
+            <artifactId>langchain4j-milvus</artifactId>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+</project>
