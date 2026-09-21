@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>io.keel</groupId>
+        <artifactId>keel-parent</artifactId>
+        <version>0.1.0-SNAPSHOT</version>
+        <relativePath>../pom.xml</relativePath>
+    </parent>
+
+    <artifactId>keel-client</artifactId>
+
+    <name>keel-client</name>
+    <description>Keel 接入适配层：把 AgentRequest 拼装、身份解析、幂等键与 session 处理收口，
+        业务只写 keelClient.chat(input) 即可</description>
+
+    <dependencies>
+        <!-- 只依赖 core（AgentRequest/AgentResult/KeelAgent/KeelPrincipal）。
+             刻意不依赖 Spring AI / 向量库 / 图内核——接入层不应把编排依赖带给业务。 -->
+        <dependency>
+            <groupId>io.keel</groupId>
+            <artifactId>keel-core</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <!--
+            从请求上下文（RequestContextHolder → ServletRequestAttributes）解析
+            X-Session-Id 需要 spring-web + servlet API。两者都设 optional：
+            非 Web 场景（批处理 / 定时任务 / 消息消费）也能用本模块，
+            拿不到请求上下文时自动降级为「显式入参 / 按身份生成的稳定 sessionId」。
+        -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-web</artifactId>
+            <optional>true</optional>
+        </dependency>
+        <!--
+            编译期需要 HttpServletRequest 类型（servlet API 不会从 optional 的
+            spring-web 传递过来），运行期由业务的 Web 容器提供。
+            scope=provided 同时覆盖主源码编译与测试编译，无需再声明一份 test scope。
+        -->
+        <dependency>
+            <groupId>jakarta.servlet</groupId>
+            <artifactId>jakarta.servlet-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+</project>
