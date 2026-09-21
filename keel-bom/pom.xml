@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <!--
+      注意：本 BOM 不能继承 keel-parent —— 父 POM 会 import 本 BOM，
+      继承关系会形成 Maven import 环（参考 spring-boot-dependencies 的独立 BOM 形态）。
+      因此三方版本属性必须内聚在本文件内声明。
+    -->
+    <groupId>io.keel</groupId>
+    <artifactId>keel-bom</artifactId>
+    <version>0.1.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
+
+    <properties>
+        <spring-ai.version>1.0.0-M5</spring-ai.version>
+        <!-- 0.36.2 为稳定 API 线（Java 17，InMemoryEmbeddingStore 在主包内）；
+             升 1.x 时只需改这里与适配层 import，业务模块无感 -->
+        <langchain4j.version>0.36.2</langchain4j.version>
+        <!-- MCP 官方 Java SDK（FR-31）；keel-mcp 只做只读适配，协议本身不自研 -->
+        <mcp.version>0.10.0</mcp.version>
+    </properties>
+
+    <!--
+      Keel 统一版本锁定（FR-04）：Spring Boot 版本由父 POM 的 spring-boot-starter-parent
+      提供；模型 / RAG 等三方 BOM 在此集中 import，业务模块只写 groupId/artifactId。
+    -->
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.springframework.ai</groupId>
+                <artifactId>spring-ai-bom</artifactId>
+                <version>${spring-ai.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>dev.langchain4j</groupId>
+                <artifactId>langchain4j-bom</artifactId>
+                <version>${langchain4j.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <!-- MCP 官方 SDK 不在任何 BOM 里，版本在此直接锁定（FR-04） -->
+            <dependency>
+                <groupId>io.modelcontextprotocol.sdk</groupId>
+                <artifactId>mcp</artifactId>
+                <version>${mcp.version}</version>
+            </dependency>
+            <!--
+              Keel 自身构件：纳入 BOM 后业务可只引需要的模块（例如只要 keel-client +
+              keel-core 做非 Spring 集成），不必整包引 starter。版本统一用 ${project.version}，
+              与 BOM 自身同源，发版时一起走。
+            -->
+            <dependency>
+                <groupId>io.keel</groupId>
+                <artifactId>keel-core</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.keel</groupId>
+                <artifactId>keel-client</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.keel</groupId>
+                <artifactId>keel-graph</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.keel</groupId>
+                <artifactId>keel-skill</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.keel</groupId>
+                <artifactId>keel-guard</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.keel</groupId>
+                <artifactId>keel-model-spring-ai</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.keel</groupId>
+                <artifactId>keel-rag-langchain4j</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.keel</groupId>
+                <artifactId>keel-mcp</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.keel</groupId>
+                <artifactId>keel-mcp-server</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.keel</groupId>
+                <artifactId>keel-memory</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.keel</groupId>
+                <artifactId>keel-langfuse</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.keel</groupId>
+                <artifactId>keel-harness</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.keel</groupId>
+                <artifactId>keel-spring-boot-starter</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+</project>

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>3.3.3</version>
+        <relativePath/>
+    </parent>
+
+    <groupId>io.keel</groupId>
+    <artifactId>keel-parent</artifactId>
+    <version>0.1.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
+
+    <name>keel-parent</name>
+    <description>Keel - Spring Boot Agent Runtime (parent POM)</description>
+
+    <properties>
+        <java.version>17</java.version>
+        <!-- 三方版本（spring-ai / langchain4j）统一在 keel-bom 内声明，勿在此重复 -->
+    </properties>
+
+    <modules>
+        <module>keel-bom</module>
+        <module>keel-core</module>
+        <module>keel-client</module>
+        <module>keel-spring-boot-starter</module>
+        <module>keel-graph</module>
+        <module>keel-skill</module>
+        <module>keel-guard</module>
+        <module>keel-rag-langchain4j</module>
+        <module>keel-model-spring-ai</module>
+        <module>keel-mcp</module>
+        <module>keel-mcp-server</module>
+        <module>keel-memory</module>
+        <module>keel-langfuse</module>
+        <module>keel-harness</module>
+        <module>examples/ticket-assist</module>
+    </modules>
+
+    <dependencyManagement>
+        <dependencies>
+            <!-- 三方版本统一在 keel-bom 收口（FR-04），父 POM 只引一个 BOM -->
+            <dependency>
+                <groupId>io.keel</groupId>
+                <artifactId>keel-bom</artifactId>
+                <version>${project.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+</project>

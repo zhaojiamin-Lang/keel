@@ -1,0 +1,27 @@
+# ---- 构建产物 ----
+target/
+*.class
+
+# ---- IDE / 编辑器本地文件 ----
+.idea/
+*.iml
+.vscode/
+.trae/
+
+# ---- 本地日志 ----
+logs/
+*.log
+
+# ---- AI 助手本地工作区数据 ----
+.workbuddy/
+
+# ---- 内部文档（仅本地维护，不入库） ----
+AGENTS.md
+docs/requirements.md
+
+# ---- 本地临时脚本 / 调试产物 ----
+.tmp/
+
+# ---- 操作系统 ----
+.DS_Store
+Thumbs.db
