@@ -1,0 +1,38 @@
+name: keel-harness-gate
+
+# Harness 评测门禁：keel-harness 的评测用例必须全绿，否则 CI 失败。
+# 评测数据集在 keel-harness/src/test/resources/eval/，含 6 类断言
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  harness-gate:
+    name: Harness Eval Gate
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: maven
+
+      - name: Run Harness eval suite
+        # 评测不过即 job 失败（由 mvn 退出码判定）。
+        # 断言与数据集是质量基线，不得为了让 CI 变绿而放宽。
+        # 6 类断言：leak / missing_citation / fabricated_id / unexpected_write
+        #           write_without_idempotency / exceeded_step_budget
+        run: mvn -pl keel-harness -am test
+
+      - name: Upload eval results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: harness-eval-results
+          path: keel-harness/target/surefire-reports/
+          retention-days: 30

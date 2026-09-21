@@ -1,0 +1,61 @@
+name: keel-e2e-agent-eval
+
+# 真实 agent 端到端评测（手动触发）
+#
+# 与 harness-gate.yml 的分工：
+#   - harness-gate.yml（push/PR 自动跑）：只跑 keel-harness 单测，验证 checker 规则实现
+#   - 本 workflow（手动触发）：用 ticket-assist 示例里**真实的 KeelAgent**（Skill 路由 /
+#     Guard / 图循环 / 写确认链路 / ToolPort）跑 eval-e2e 数据集，回归 agent 实际行为
+#
+# 为什么手动触发：真实 agent 跑数比纯单测慢、且接真实模型时消耗 API 配额与费用，
+# 不适合放在每次 push 的必过门禁上。发版前 / 改 Prompt、Skill、Guard 规则后手动跑一次。
+#
+# 模型来源二选一：
+#   A. 不传 secret（默认）→ 用示例自带的 ScriptedChatModel，确定性、零成本、不触网
+#   B. 配好 OPENAI_API_KEY secret 并勾选 use_real_model=true → 接真实模型跑同一批数据集
+on:
+  workflow_dispatch:
+    inputs:
+      use_real_model:
+        description: '使用真实模型（需已配置 OPENAI_API_KEY secret）'
+        required: false
+        default: false
+        type: boolean
+
+jobs:
+  e2e-eval:
+    name: Real-agent E2E eval
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: maven
+
+      - name: Run real-agent E2E eval
+        # 数据集在 examples/ticket-assist/src/test/resources/eval-e2e/
+        # 跑 TicketAssistEvalE2ETest（真实 agent + checker）与 TicketAssistEvalSentinelTest
+        # （负向哨兵：证明评测真能标红，而不是恒绿）
+        env:
+          # 未勾选真实模型或 secret 未配置时为空 → 示例回落到 ScriptedChatModel
+          OPENAI_API_KEY: ${{ inputs.use_real_model && secrets.OPENAI_API_KEY || '' }}
+        run: mvn -pl examples/ticket-assist -am test
+
+      - name: Upload e2e eval results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: e2e-eval-results
+          path: examples/ticket-assist/target/surefire-reports/
+          retention-days: 30
+
+      - name: Summarize
+        if: always()
+        run: |
+          echo "E2E eval finished (real model: ${{ inputs.use_real_model }})"
+          echo "数据集: examples/ticket-assist/src/test/resources/eval-e2e/"
+          echo "失败时请查 artifact e2e-eval-results 中的用例 ID 与失败规则码"
