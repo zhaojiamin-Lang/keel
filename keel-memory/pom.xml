@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>io.keel</groupId>
+        <artifactId>keel-parent</artifactId>
+        <version>0.1.0-SNAPSHOT</version>
+        <relativePath>../pom.xml</relativePath>
+    </parent>
+
+    <artifactId>keel-memory</artifactId>
+
+    <dependencies>
+        <!-- CheckpointPort / Checkpoint SPI 在 keel-graph -->
+        <dependency>
+            <groupId>io.keel</groupId>
+            <artifactId>keel-graph</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <!-- Redis 客户端：Lettuce（版本由 Spring Boot 3.3.3 管理） -->
+        <dependency>
+            <groupId>io.lettuce</groupId>
+            <artifactId>lettuce-core</artifactId>
+        </dependency>
+        <!--
+          L2 情景记忆（FR-51）：Mongo 驱动，optional——只在本模块编译期引用，
+          不向依赖 keel-memory 的业务强制传递；业务按需引入。
+        -->
+        <dependency>
+            <groupId>org.mongodb</groupId>
+            <artifactId>mongodb-driver-sync</artifactId>
+            <optional>true</optional>
+        </dependency>
+        <!--
+          L3 长期记忆（FR-52）：PostgreSQL JDBC 驱动，optional，理由同上。
+        -->
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <optional>true</optional>
+        </dependency>
+        <!--
+          L3 长期记忆向量后端（FR-52）：LangChain4j 标准嵌入模型 / 向量库 API
+          （EmbeddingModel / EmbeddingStore / Filter），版本由 keel-bom 统一管理。
+          optional——与 Mongo / PG 驱动同风格，业务按需引入；具体向量库
+          （pgvector / milvus / in-memory）由业务或 starter 决定，本模块只依赖标准接口，
+          禁止自研向量库。
+        -->
+        <dependency>
+            <groupId>dev.langchain4j</groupId>
+            <artifactId>langchain4j</artifactId>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>dev.langchain4j</groupId>
+            <artifactId>langchain4j-core</artifactId>
+        </dependency>
+    </dependencies>
+</project>
