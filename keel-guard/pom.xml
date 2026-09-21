@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>io.keel</groupId>
+        <artifactId>keel-parent</artifactId>
+        <version>0.1.0-SNAPSHOT</version>
+        <relativePath>../pom.xml</relativePath>
+    </parent>
+
+    <artifactId>keel-guard</artifactId>
+
+    <dependencies>
+        <dependency>
+            <groupId>io.keel</groupId>
+            <artifactId>keel-core</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <!-- FR-62：InjectionGuard 实现图内核的 GuardPort SPI，规则仍放在 keel-guard（铁律 4） -->
+        <dependency>
+            <groupId>io.keel</groupId>
+            <artifactId>keel-graph</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+</project>
