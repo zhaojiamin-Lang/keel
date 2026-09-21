@@ -1,0 +1,6 @@
+name: ticket-suggest
+description: Read-only skill that lists a write tool but must never be allowed to write
+requireCitation: false
+writable: false
+tools:
+  - issue.create

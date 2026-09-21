@@ -1,0 +1,7 @@
+name: mcp-multi
+description: 多 MCP server 只读查询 skill（graph 模式多后端路由测试）
+requireCitation: false
+writable: false
+tools:
+  - gitlab.search_issues
+  - oa.list_approvals

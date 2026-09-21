@@ -1,0 +1,6 @@
+name: chat
+version: "2.0"
+description: Gray version of the default chat skill
+requireCitation: false
+writable: false
+tools: []

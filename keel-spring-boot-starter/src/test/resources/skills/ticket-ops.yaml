@@ -1,0 +1,6 @@
+name: ticket-ops
+description: Ticket skill that is allowed to propose write tools (graph mode test)
+requireCitation: false
+writable: true
+tools:
+  - issue.create

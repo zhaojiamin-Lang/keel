@@ -1,0 +1,6 @@
+name: mcp-query
+requireCitation: false
+writable: false
+description: 通过只读 MCP 工具查询订单等信息，禁止任何写操作
+tools:
+  - search_orders

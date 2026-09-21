@@ -1,0 +1,10 @@
+io.keel.starter.KeelAutoConfiguration
+io.keel.starter.KeelClientAutoConfiguration
+io.keel.starter.KeelRagAutoConfiguration
+io.keel.starter.KeelRetrievalStoreAutoConfiguration
+io.keel.starter.KeelMcpAutoConfiguration
+io.keel.starter.KeelCheckpointAutoConfiguration
+io.keel.starter.KeelCheckpointDependencyAutoConfiguration
+io.keel.starter.KeelMemoryAutoConfiguration
+io.keel.starter.KeelLangfuseAutoConfiguration
+io.keel.starter.KeelStartupAutoConfiguration
