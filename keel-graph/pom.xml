@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>io.keel</groupId>
+        <artifactId>keel-parent</artifactId>
+        <version>0.1.0-SNAPSHOT</version>
+        <relativePath>../pom.xml</relativePath>
+    </parent>
+
+    <artifactId>keel-graph</artifactId>
+
+    <dependencies>
+        <!-- LangGraph 风格状态图内核：只依赖 core 的 API/DTO，
+             模型/工具/检索/Guard 全部通过本模块 spi 包下的端口抽象 -->
+        <dependency>
+            <groupId>io.keel</groupId>
+            <artifactId>keel-core</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <!-- 旁路失败（记忆召回等）需留痕告警；仅 API，绑定实现交给业务侧（NFR-08） -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+</project>
